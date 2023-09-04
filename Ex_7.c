@@ -4,14 +4,13 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-bool read_positive(int *value);
+bool read_positive(int *value);     //Declaring function to read positive numbers
 
 int main() {
 
     int num_attempts = 0;
     int number;
     do{
-
         printf("Guess how much money I have!\n");
         bool success = read_positive(&number);
         if (success) {
@@ -25,7 +24,7 @@ int main() {
     return 0;
 }
 
-bool read_positive(int *value){
+bool read_positive(int *value){     //Function to read positive numbers and stores the last number using a pointer
     int input;
     printf("Please enter a positive number: ");
     if (scanf("%d", &input) == 1 && input > 0) {
