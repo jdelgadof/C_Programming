@@ -9,8 +9,9 @@ bool read_positive(int *value);
 int main() {
 
     int num_attempts = 0;
+    int number;
     do{
-        int number;
+
         printf("Guess how much money I have!\n");
         bool success = read_positive(&number);
         if (success) {
