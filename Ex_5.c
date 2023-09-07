@@ -6,13 +6,14 @@ int read_range(int low, int high){
     int num_selection;
     do{
         printf("Roll a die and enter your result.\nEnter a number between %d and %d: ",low, high);
-        if (scanf("%d", &num_selection) != 1 || num_selection > high || num_selection < low){
+        scanf("%d", &num_selection);
+        if (num_selection > high || num_selection < low){
             while (getchar() != '\n');
             printf("invalid input, Try again!\n");
         }else{
             return num_selection;
         }
-    } while (1);
+    } while (num_selection < high || num_selection > low);
 }
 
 int main() {
