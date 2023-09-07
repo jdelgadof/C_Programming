@@ -11,13 +11,14 @@ int menu(int low, int high){
 
     do{
         printf("Enter your choice from 1 to 3: ");
-        if (scanf("%d", &num_selection) != 1 || num_selection > high || num_selection < low){
+        scanf("%d", &num_selection);
+        if (num_selection > high || num_selection < low){
             while (getchar() != '\n');
             printf("invalid input, Try again!\n");
         }else{
             return num_selection;
         }
-    } while (1);
+    } while (num_selection < high || num_selection > low);
 }
 int main() {
     srand(time(NULL));
