@@ -23,7 +23,12 @@ int main() {
         scanf("%d", &user_input);
         if(user_input <= 20 && user_input >= 0) { ;
 
-            find_first(lista, user_input);
+            int input = find_first(lista, user_input);
+            if (input >= 0){
+                printf("Found Index [%d]\n", input);
+            }else{
+                printf("Not Found!\n");
+            }
         }else{
             printf("wrong input!\n");
         }
@@ -40,13 +45,11 @@ void print_numbers(const int *array, int count){            //Re-used function f
 
 int find_first(const unsigned int *list, unsigned int to_find){
     int count = 0;
-    do{
+    while (list[count]!= 0){
         if(list[count] == to_find){
-            printf("First found in index = %d\n", count);
             return count;
         }
-        count++;
-    }while (list[count]!= 0);
-    printf("Not found!\n");
+        count ++;
+    };
     return -1;
 }
