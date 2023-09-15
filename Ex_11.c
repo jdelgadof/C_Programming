@@ -12,7 +12,7 @@ int main(void) {
     char replace[3];
 
     printf("Enter a string with TWO characters:");      //Why when I asked the string first,
-    get_input(replace);                              // it is modified to have the first item of the string as an '\000'
+    get_input(replace);                              // it is modified to have the first item of the string as an '\000'???
 
     printf("Enter an initial string:");
     get_input(word);
