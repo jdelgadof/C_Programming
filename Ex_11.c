@@ -44,7 +44,7 @@ int replace_char(char *word, const char *repl){
     }
 }
 void get_input(char *input){
-    fgets(input, 100, stdin);
+    fgets(input, 80, stdin);
     if (input[strlen(input) - 1] == '\n') {
         input[strlen(input) - 1] = '\0';
     }
