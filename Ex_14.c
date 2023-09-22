@@ -35,9 +35,11 @@ void ReadWriteCapitalFile(const char* file_input, char list[MAX_LINES][MAX_LENGT
 
         printf("Read %d lines from '%s':\n", count, file_input);
         // count = 100
-        file = fopen(file_input, "w");         //not specify but write in the same file everything in CAPS
+        file = fopen(file_input, "w");  //not specify, but writing in the same file everything in CAPS
         if (file == NULL) {
             fprintf(stderr, "'%s' file not found or unable to open", file_input);
+            // Stderr again in case the file can not access after reading, and according to Keijo is good practice
+            // to always check if the file was successfully accessed.
         } else {
             for (int i = 0; i < count; i++) {
                 int length = strlen(list[i]);
