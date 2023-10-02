@@ -56,6 +56,5 @@ int main(void) {
     printf("----------------\n");
     print_numbers(head);
     free_memory(head);
-
     return 0;
 }
