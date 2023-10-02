@@ -12,16 +12,16 @@ typedef struct node {
     struct node *next;
 } nnode;
 
-nnode* add_Node(nnode* head, int num);
+nnode* add_Node(nnode *head, int num);
 
-void print_numbers(nnode* head);
+void print_numbers(nnode *head);
 
-void free_memory(nnode* head);
+void free_memory(nnode *head);
 
 void get_input(char *input);
 
 int main(void) {
-    nnode * head = NULL;
+    nnode *head = NULL;
     char file_name[MAX_LENGTH_NAME_FILE];
     do{
         printf("Please enter a number or 'end' to finnish: ");
@@ -40,22 +40,22 @@ int main(void) {
     free_memory(head);
     return 0;
 }
-nnode* add_Node(nnode* head, int num){
-    nnode* new_node = (nnode*)malloc(sizeof(nnode));
+nnode* add_Node(nnode *head, int num){
+    nnode *new_node = (nnode*)malloc(sizeof(nnode));
     new_node->number = num;
     new_node->next = head;
     return new_node;
 }
-void print_numbers(nnode* head){
-    nnode* actual = head;
+void print_numbers(nnode *head){
+    nnode *actual = head;
     while(actual != NULL){
         printf("->\t[%d]\n", actual->number);
         actual = actual->next;
     }
 }
-void free_memory(nnode* head){
+void free_memory(nnode *head){
     while(head != NULL){
-        nnode* temp = head;
+        nnode *temp = head;
         head = head->next;
         free(temp);
     }
