@@ -11,9 +11,13 @@ typedef struct node {
     int number;
     struct node *next;
 } nnode;
+
 nnode* add_Node(nnode* head, int num);
+
 void print_numbers(nnode* head);
+
 void free_memory(nnode* head);
+
 void get_input(char *input);
 
 int main(void) {
