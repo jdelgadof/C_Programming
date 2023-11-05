@@ -1,0 +1,104 @@
+#include <stdio.h>
+#include "pico/stdlib.h"
+#include "pico.h"
+#include "pico/util/queue.h"
+#include "hardware/gpio.h"
+#include "hardware/pwm.h"
+
+#define LED1 20
+#define LED2 21
+#define LED3 22
+#define SWITCH 8
+#define SW_UP 7
+#define SW_DOWN 9
+
+void create_led(uint led);
+void create_button(uint button);
+void adjust_bright(uint led, int bright);
+
+int main() {
+
+    create_led(LED1);
+    create_led(LED2);
+    create_led(LED3);
+
+    create_button(SWITCH);
+    create_button(SW_UP);
+    create_button(SW_DOWN);
+
+    stdio_init_all();
+
+    bool led_state = false;
+    int brightness = 500;  // Initial brightness 50% (0-1000)
+
+    while (1) {
+        if (gpio_get(SWITCH) == 0) {
+            while (gpio_get(SWITCH) == 0) {
+                tight_loop_contents();  // Wait for button release
+            }
+            if(brightness == 0){
+                brightness = 500;
+                led_state = false;
+            }
+            // Toggle LED state
+            led_state = !led_state;
+            if (led_state) {
+                adjust_bright(LED1,brightness);
+                adjust_bright(LED2, brightness);
+                adjust_bright(LED3, brightness);
+            } else {
+                adjust_bright(LED1,0);
+                adjust_bright(LED2, 0);
+                adjust_bright(LED3, 0);
+            }
+            sleep_ms(100);  // Delay to avoid multiple toggles
+            printf("LED state %s\n", led_state ? "ON" : "OFF");
+        }
+        if (gpio_get(SW_UP) == 0 && led_state == true) {
+            sleep_ms(50);  // Delay to avoid multiple toggles
+            brightness += 25;
+            if (brightness >= 1000) {
+                brightness = 1000;
+            }
+            adjust_bright(LED1,brightness);
+            adjust_bright(LED2, brightness);
+            adjust_bright(LED3, brightness);
+            printf("LED brightness: %d%%\n", brightness/10);
+        }
+
+        if (gpio_get(SW_DOWN) == 0 && led_state == true) {
+            sleep_ms(50);  // Delay to avoid multiple toggles
+            brightness -= 25;
+            if (brightness <= 0) {
+                brightness = 0;
+            }
+            adjust_bright(LED1,brightness);
+            adjust_bright(LED2, brightness);
+            adjust_bright(LED3, brightness);
+            printf("LED brightness: %d%%\n", brightness/10);
+        }
+    }
+}
+void create_led(uint led){
+    uint period, freq;
+    period = 1000;
+    freq = 125;
+    uint slice_num = pwm_gpio_to_slice_num(led);
+    pwm_config config_led = pwm_get_default_config();
+    pwm_config_set_clkdiv_int(&config_led,freq); //Division of 125MHz / 1MHz
+    pwm_config_set_wrap(&config_led,period-1); //Set the PWM period
+    pwm_set_enabled(slice_num, led);
+    pwm_init(slice_num,&config_led,true);
+    gpio_set_function(led,GPIO_FUNC_PWM);
+}
+void create_button(uint button){
+    gpio_init(button);
+    gpio_set_dir(button, GPIO_IN);
+    gpio_set_pulls(button, true, false);
+}
+void adjust_bright(uint led, int bright){
+    uint slice, channel;
+    slice = pwm_gpio_to_slice_num(led);
+    channel = pwm_gpio_to_channel(led);
+    pwm_set_chan_level(slice,channel,bright);
+}
